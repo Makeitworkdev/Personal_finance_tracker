@@ -1,18 +1,48 @@
 #a program that takes in all income, expenses, calculates the expenses against a set budget and savings amount
 #figure out how to include tax deductions on the gross income
-x= int(input("Enter your total monthly income amount here: ")) #users to input their income amount
-print(x)
+def get_input(prompt, input_type=float):
+    """
+    Helper function to handle user input with type validation.
+    """
+    while True:
+        try:
+            return input_type(input(prompt))  # Convert input to the specified type
+        except ValueError:
+            print(f"Invalid input. Please enter a valid {input_type.__name__}.")
 
-y = int(input("Enter the amount spent monthly here: "))   #user inputs their expenses amount
-print(y)
+def main():
+    print("Welcome to the Financial Tracker System!")
 
-z=x-y
-print(f'Your monthly balance is: ', z)
+    # Collecting user inputs
+    income = get_input("Enter your total income: Ksh", float)
+    expenses = get_input("Enter your total expenses: Ksh", float)
+    budget = get_input("Enter your budget: Ksh", float)
+    savings = get_input("Enter your current savings: Ksh", float)
 
+    # Simple financial computations
+    balance = income - expenses
+    remaining_budget = budget - expenses
+    total_savings = savings + balance
+
+    # Displaying results
+    print("\n--- Financial Summary ---")
+    print(f"Total Income: Ksh{income:.2f}")
+    print(f"Total Expenses: Ksh{expenses:.2f}")
+    print(f"Remaining Balance: Ksh{balance:.2f}")
+    print(f"Remaining Budget: Ksh{remaining_budget:.2f}")
+    print(f"Total Savings (including balance): Ksh{total_savings:.2f}")
+
+if __name__ == "__main__":
+    main()
+    
+
+#Store financial info in a dictionary
 Finances={
-    "Income":x,
-    "Expenses":y,
-    "Balance":z
+    "Total Income": income,
+    "Total Expenses": expenses,
+    "Remaining Balance": balance,
+    "Remaining budget": remaining_budget,
+    "Total Savings": total_savings
 }
 
 print(Finances)
