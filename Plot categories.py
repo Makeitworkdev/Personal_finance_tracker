@@ -10,15 +10,24 @@ current_year = current_date.year
 current_month_name = current_date.strftime('%B')  # Get the name of the current month
 
 # Get number of days in the current month
-days_in_month = calendar.monthrange(current_year, current_month)
+days_in_month = calendar.monthrange(current_year, current_month)[1]
 
 def process_date(day=None, month=None, year=None):
-    if day is None or month is None or year is None:
-        # Use current date if any of the day, month, or year is not provided
-        current_date = datetime.datetime.now()
-        day = current_date.day if day is None else day
-        month = current_date.month if month is None else month
-        year = current_date.year if year is None else year     
+
+    get_date = input("Do you want to enter a date? (yes/no)").strip().lower()
+    if get_date == "no":
+        print("Will use current date.")
+    elif get_date == "yes":
+        day = int(input("Wirte the day (number): "))
+        month =int(input("Write the month (number): "))
+        year = int(input("Write the year (number): "))
+        
+        if day is None or month is None or year is None:
+            # Use current date if any of the day, month, or year is not provided
+            current_date = datetime.datetime.now()
+            day = current_date.day if day is None else day
+            month = current_date.month if month is None else month
+            year = current_date.year if year is None else year     
 
     # Process the date
     print(f"Processing date: {day}-{month}-{year}")
@@ -104,7 +113,10 @@ def plot_expenses(expenses):
     plt.title(f'Expenditure breakdown for {calendar.month_name[month]} {year}')
     plt.bar(category, amounts)
     plt.show()
-
+    
+    plt.pie(amounts, labels = category)
+    plt.legend()
+    plt.show()
 
 
 def main():
