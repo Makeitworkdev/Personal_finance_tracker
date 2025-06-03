@@ -35,7 +35,7 @@ def get_recurring_expenses():
         elif add_expense == "yes":
             expense_name = input("Enter the name of the expense (e.g., rent, subscription): ")
             expense_amount = get_input("Enter the amount of the expense: ", float)
-            expense_frequency = input("How often does this expense occur? (daily/monthly/weekly/weekdays/weekends): ").strip().lower()
+            expense_frequency = input("How often does this expense occur? (daily/monthly/weekly/weekdays/weekends/custom->write the number of times the expense occurs in a month in words): ").strip().lower()
 
             
             #calculate monthly expense from recurring expenses
@@ -47,6 +47,9 @@ def get_recurring_expenses():
                 expense_amount = expense_amount*5*4  #assumed Monday- Friday
             elif expense_frequency == "weekends":
                 expense_amount = expense_amount*2*4  #assumed saturday and sunday weekends
+            elif expense_frequency == "custom":
+                expense_amount = expense_amount*int(expense_frequency)
+                
 
 
             
@@ -60,18 +63,41 @@ def get_recurring_expenses():
             print("Invalid response. Please answer 'yes' or 'no'.")
     
     return recurring_expenses
+def get_budget():
+    budget = []
+    
+    while True:
+        add_budget_item == input("Would you like to provide a breakdown of your budget?, Answer 'yes' or 'no': "):
+        if add_budget_item != "no":
+            budget_total = get_input("Write your total monthly budget amount: ", float)
+            budget.append({"budget": budget_total})
+        elif add_budget_item == "yes":
+            item_name = input("Please write the budget item name (e.g. rent, clothes, food, leisure): ").strip().lower()
+            item_amount = get_input("Please write the amount of the budget item named: ", float)
 
+            budget.append({
+                "name": item_name,
+                "amount": item_amount
+            })
+        
+        
+        
 def main():
     print("Welcome to the Financial Tracker System!")
 
     # Collecting user inputs
     income = get_input("Enter your total income: Ksh", float)
     expenses = get_input("Enter your total expenses: Ksh", float)
-    budget = get_input("Enter your budget: Ksh", float)
     savings = get_input("Enter your current savings: Ksh", float)
 
     #get recurring expenses
     recurring_expenses = get_recurring_expenses()
+
+    #get budget
+    budget = get_budget()
+
+    #calculate total budget amount
+    total_budget_amount = sum(item ["amount"] for item in budget)
 
     #calculate total recurring expenses
     total_recurring_expenses = sum(expense["amount"] for expense in recurring_expenses)
@@ -81,7 +107,7 @@ def main():
 
     # Simple financial computations
     balance = income - total_expenses
-    remaining_budget = budget - total_expenses
+    remaining_budget = total_budget_amount - total_expenses
     total_savings = savings + balance
 
     # Displaying results
